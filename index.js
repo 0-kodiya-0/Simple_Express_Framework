@@ -1,3 +1,6 @@
-require('./src/server').listen(3000, () => {
-    console.log('server up.');
-});
+const Server = require("./src/server")
+const Routes = require("./src/routes")
+
+module.exports = {
+    Server , Routes
+}

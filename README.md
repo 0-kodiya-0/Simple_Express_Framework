@@ -2,7 +2,6 @@
 A Simple express server library
 
 # Notes
-
 index.js - Main file
 src/request.js - Logic for handling the request object
 src/response.js - Logic for handling the response object

@@ -1,7 +1,7 @@
 const http = require('http');
-const routes = require('./routes/main');
+const routes = require('./routes');
 const { Request } = require('./request');
-const { Middlewares } = require('./middleware/main');
+const { Middlewares } = require('./middleware');
 const { Response } = require('./response');
 
 const server = http.createServer(IncomingRequest); // Creates the web server
@@ -92,6 +92,8 @@ function callbackExe(index, req, res) {
         } else {
             res.send(response.status, response.message);
         };
+
+        delete req // Deleting the request object
     });
 };
 

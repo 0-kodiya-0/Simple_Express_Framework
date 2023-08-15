@@ -179,6 +179,8 @@ const Response = res => {
         res.write(serverError());
         res.end();
       };
+
+      delete res // Deleting the response object
     }
   };
 }
