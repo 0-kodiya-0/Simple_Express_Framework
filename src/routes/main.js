@@ -191,15 +191,38 @@ function MethodMain(args, method) {
     middlewares.push(middleware);
 };
 
+/**
+ * Runs when request has GET method
+ * 
+ * @param  {...any} args (tokenAccessType , pathAccessFor ex- admin or notadmin or both, routeName, middleWares.... , callBack)
+ */
 function Get(...args) {
     MethodMain(args, "GET");
 };
+
+/**
+ * Runs when request has POST method
+ * 
+ * @param  {...any} args (tokenAccessType , pathAccessFor ex- admin or notadmin or both, routeName, middleWares.... , callBack)
+ */
 function Post(...args) {
     MethodMain(args, "POST");
 };
+
+/**
+ * Runs when request has PUT method
+ * 
+ * @param  {...any} args (tokenAccessType , pathAccessFor ex- admin or notadmin or both, routeName, middleWares.... , callBack)
+ */
 function Put(...args) {
     MethodMain(args, "PUT");
 };
+
+/**
+ * Runs when request has DELETE method
+ * 
+ * @param  {...any} args (tokenAccessType , pathAccessFor ex- admin or notadmin or both, routeName, middleWares.... , callBack)
+ */
 function Delete(...args) {
     MethodMain(args, "DELETE");
 };

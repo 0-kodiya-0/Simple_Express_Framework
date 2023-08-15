@@ -25,6 +25,9 @@ function IncomingRequest(req, res) {
             routeFound = true;
 
             routes.getSearchParams(req);
+
+            requestExe(index, req, res);
+            
             break;
         };
     };
