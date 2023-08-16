@@ -144,7 +144,7 @@ function MethodMain(args, method) {
 /**
  * Runs when request has GET method
  * 
- * @param  {...any} args (pathAccessFor ex- admin or notadmin or both, routeName, middleWares.... , callBack)
+ * @param  {...any} args (routeName, middleWares.... , callBack)
  */
 function Get(...args) {
     MethodMain(args, "GET");
@@ -153,7 +153,7 @@ function Get(...args) {
 /**
  * Runs when request has POST method
  * 
- * @param  {...any} args (pathAccessFor ex- admin or notadmin or both, routeName, middleWares.... , callBack)
+ * @param  {...any} args (routeName, middleWares.... , callBack)
  */
 function Post(...args) {
     MethodMain(args, "POST");
@@ -162,7 +162,7 @@ function Post(...args) {
 /**
  * Runs when request has PUT method
  * 
- * @param  {...any} args (pathAccessFor ex- admin or notadmin or both, routeName, middleWares.... , callBack)
+ * @param  {...any} args (routeName, middleWares.... , callBack)
  */
 function Put(...args) {
     MethodMain(args, "PUT");
@@ -171,7 +171,7 @@ function Put(...args) {
 /**
  * Runs when request has DELETE method
  * 
- * @param  {...any} args (pathAccessFor ex- admin or notadmin or both, routeName, middleWares.... , callBack)
+ * @param  {...any} args (routeName, middleWares.... , callBack)
  */
 function Delete(...args) {
     MethodMain(args, "DELETE");
