@@ -103,7 +103,7 @@ const middlewares = [];
 /**
  * 
  * @param {string} pathName - A path that the server can accpet
- * @param {Function} Middleware  - Middleware functions that executes before the callback
+ * @param {Function} middleware  - Middleware functions that executes before the callback
  * @param {Function} callback - Callback function for executing after the middleware have finished executing
  * 
  * @param {string} method - Method that the path belong to
