@@ -94,9 +94,6 @@ function urlSplit(req) {
     req.searchParams = urlData[1];
 };
 
-const tokenAccessTypes = ["basic", "personal", "work", "student", "admin", "server", "session"];
-const tokenAccess = [];
-const accessFors = [];
 const routes = [];
 const callbacks = [];
 const middlewares = [];
@@ -105,8 +102,6 @@ const middlewares = [];
 
 /**
  * 
- * @param {string|Array} tokenAccess - Define Token access for paths
- * @param {string} accessFor - Admin will only allow admins , NotAdmin will only allow not admins , Both will allow both admins and not admins
  * @param {string} pathName - A path that the server can accpet
  * @param {Function} Middleware  - Middleware functions that executes before the callback
  * @param {Function} callback - Callback function for executing after the middleware have finished executing
@@ -114,65 +109,22 @@ const middlewares = [];
  * @param {string} method - Method that the path belong to
  */
 function MethodMain(args, method) {
-    let route, tAccess, accessFor, middleware = [], callback
+    let route, middleware = [], callback
 
-    if (typeof args[0] === "string") {
-        if (args[0] !== "All") {
-            for (let i = 0; i < tokenAccessTypes.length; i++) {
-                if (args[0] === tokenAccessTypes[i]) {
-                    break;
-                } else if (args[0] !== tokenAccessTypes[i] && i === tokenAccessTypes.length - 1) {
-                    throw new TypeError("...args[0] value " + args[0] + " not accepted");
-                };
-            };
-        } else {
-            args[0] = tokenAccessTypes;
-        };
-    } else if (Array.isArray(args[0])) {
-        if (args[0].length <= tokenAccessTypes.length) {
-            args[0].forEach((argsV) => {
-                let found = false;
-                for (let i = 0; i < tokenAccessTypes.length; i++) {
-                    if (argsV === tokenAccessTypes[i]) {
-                        found = true;
-                        break;
-                    };
-                };
-                if (found === false) {
-                    throw new TypeError("...args[0] value " + argsV + " not accepted");
-                };
-            });
-        } else {
-            throw new TypeError("...args[0] can only maximum 3 values");
-        };
-    } else {
-        throw new TypeError("...args[0] need to be string or array");
-    };
-
-    if (typeof args[1] !== "string") {
+    if (typeof args[0] !== "string") {
         throw new TypeError("...args[1] need to be string");
-    };
-    if (args[1] !== "notadmin" && args[1] !== "admin" && args[1] !== "both") {
-        throw new TypeError("...args[1] value not valid");
-    };
-    if (typeof args[2] !== "string") {
-        throw new TypeError("...args[2] need to be string");
     };
     if (typeof args[args.length - 1] !== "function") {
         throw new TypeError("...args[...args.length - 1] need to be function");
     };
 
-    if (args.length === 4) {
-        tAccess = args[0];
-        accessFor = args[1];
-        route = args[2];
-        callback = args[3];
-    } else if (args.length > 4) {
-        tAccess = args[0];
-        accessFor = args[1];
-        route = args[2];
+    if (args.length === 2) {
+        route = args[0];
+        callback = args[1];
+    } else if (args.length > 2) {
+        route = args[0];
         callback = args[args.length - 1]
-        for (let i = 3; i < args.length - 1; i++) {
+        for (let i = 1; i < args.length - 1; i++) {
             if (typeof args[i] !== "function") {
                 throw new TypeError(`...args[${i}] need to be function`);
             };
@@ -180,8 +132,6 @@ function MethodMain(args, method) {
         };
     };
 
-    tokenAccess.push(tAccess);
-    accessFors.push(accessFor);
     routes.push({
         route,
         hasMiddleWare: middleware.length !== 0,
@@ -194,7 +144,7 @@ function MethodMain(args, method) {
 /**
  * Runs when request has GET method
  * 
- * @param  {...any} args (tokenAccessType , pathAccessFor ex- admin or notadmin or both, routeName, middleWares.... , callBack)
+ * @param  {...any} args (pathAccessFor ex- admin or notadmin or both, routeName, middleWares.... , callBack)
  */
 function Get(...args) {
     MethodMain(args, "GET");
@@ -203,7 +153,7 @@ function Get(...args) {
 /**
  * Runs when request has POST method
  * 
- * @param  {...any} args (tokenAccessType , pathAccessFor ex- admin or notadmin or both, routeName, middleWares.... , callBack)
+ * @param  {...any} args (pathAccessFor ex- admin or notadmin or both, routeName, middleWares.... , callBack)
  */
 function Post(...args) {
     MethodMain(args, "POST");
@@ -212,7 +162,7 @@ function Post(...args) {
 /**
  * Runs when request has PUT method
  * 
- * @param  {...any} args (tokenAccessType , pathAccessFor ex- admin or notadmin or both, routeName, middleWares.... , callBack)
+ * @param  {...any} args (pathAccessFor ex- admin or notadmin or both, routeName, middleWares.... , callBack)
  */
 function Put(...args) {
     MethodMain(args, "PUT");
@@ -221,7 +171,7 @@ function Put(...args) {
 /**
  * Runs when request has DELETE method
  * 
- * @param  {...any} args (tokenAccessType , pathAccessFor ex- admin or notadmin or both, routeName, middleWares.... , callBack)
+ * @param  {...any} args (pathAccessFor ex- admin or notadmin or both, routeName, middleWares.... , callBack)
  */
 function Delete(...args) {
     MethodMain(args, "DELETE");
