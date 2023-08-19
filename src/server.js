@@ -23,11 +23,8 @@ function IncomingRequest(req, res) {
 
         if (routes.isMatching(req, routes.routes[index].route) && req.method === routes.routes[index].method && routes.parseUrlData(req, routes.routes[index].route)) {
             routeFound = true;
-
             routes.getSearchParams(req);
-
             requestExe(index, req, res);
-            
             break;
         };
     };

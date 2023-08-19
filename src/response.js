@@ -71,27 +71,26 @@ const StatusCodes = {
   511: "Network Authentication Required",  // Network Authentication Required
 }
 
-const fastJson = require("fast-json-stringify");
-const mongoose = require("mongoose");
+// const fastJson = require("fast-json-stringify");
 
-const mongooseErrorStringify = fastJson(({
-  title: "MongooseError",
-  type: "object",
-  properties: {
-    name: {
-      type: "string"
-    },
-    message: {
-      type: "string"
-    },
-    kind: {
-      type: "string"
-    },
-    path: {
-      type: "string"
-    }
-  }
-}));
+// const mongooseErrorStringify = fastJson(({
+//   title: "MongooseError",
+//   type: "object",
+//   properties: {
+//     name: {
+//       type: "string"
+//     },
+//     message: {
+//       type: "string"
+//     },
+//     kind: {
+//       type: "string"
+//     },
+//     path: {
+//       type: "string"
+//     }
+//   }
+// }));
 
 /**
  * Main class for Sending error in a http response for the client 
@@ -104,15 +103,7 @@ function ResponseMessageCreate(status, message) {
   if (typeof status !== "number") {
     throw new TypeError("status need to be number");
   };
-
   message = { status: status, message: typeof message === "undefined" ? StatusCodes[status] : message };
-
-  if (message.message instanceof mongoose.MongooseError) {
-    delete message.message.properties
-    delete message.message.value
-    message.message = mongooseErrorStringify(message.message);
-  };
-
   return message;
 };
 
@@ -169,14 +160,14 @@ const Response = res => {
           if (typeof text === "string") { // Text need to be in a string
             res.write(text)
           } else {
-            res.write(serverError());
+            res.write(serverError().message);
           };
         };
         res.end();
       } else if (status === "piped") {
         return;
       } else {
-        res.write(serverError());
+        res.write(serverError().message);
         res.end();
       };
 

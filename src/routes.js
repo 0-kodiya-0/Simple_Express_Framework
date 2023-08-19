@@ -8,11 +8,12 @@ function getSearchParams(req) {
     if (req.searchParams) {
         const keyValues = req.searchParams.split("&");
         req.searchParams = {};
-
         for (let i = 0; i < keyValues.length; i++) { // Adding search parameters to obj
             const element = keyValues[i].split("=");
             req.searchParams[element[0]] = element[1];
         };
+    } else {
+        req.searchParams = {}; // To make handling error is other funtions easy
     };
 };
 
@@ -25,7 +26,6 @@ function getSearchParams(req) {
  */
 function parseUrlData(req, route) {
     const routeSplit = route.split('/');
-
     req.urlParams = {}
     if (routeSplit.length !== req.url.length) {
         return false;
@@ -37,7 +37,6 @@ function parseUrlData(req, route) {
             req.urlParams[key[1]] = value
         }
     });
-
     return true;
 };
 
@@ -51,23 +50,16 @@ function parseUrlData(req, route) {
 function isMatching(req, route) {
     // required URL structure
     // /user/:id/comment/:comment
-
+    if (typeof req.url !== "string") {
+        return false
+    };
     let forStart = 0;
     req.admin = false; // When True the request is identified as an admin request otherwise a normal request
-
     const urlSplit = req.url.split('/');
     urlSplit[0] = "/";
-
     req.url = urlSplit;
-
-    if (urlSplit[0] === "admin") {
-        req.admin = true;
-        forStart = 1
-    };
-
     const routeSplit = route.split('/');
     routeSplit[0] = "/";
-
     for (let index = forStart; index < routeSplit.length; index++) {
         if (routeSplit[index][0] === ':') {
             if (typeof urlSplit[index] === "undefined") {
@@ -79,7 +71,6 @@ function isMatching(req, route) {
             };
         };
     };
-
     return true;
 };
 
@@ -110,14 +101,12 @@ const middlewares = [];
  */
 function MethodMain(args, method) {
     let route, middleware = [], callback
-
     if (typeof args[0] !== "string") {
         throw new TypeError("...args[1] need to be string");
     };
     if (typeof args[args.length - 1] !== "function") {
         throw new TypeError("...args[...args.length - 1] need to be function");
     };
-
     if (args.length === 2) {
         route = args[0];
         callback = args[1];
@@ -131,7 +120,6 @@ function MethodMain(args, method) {
             middleware.push(args[i]);
         };
     };
-
     routes.push({
         route,
         hasMiddleWare: middleware.length !== 0,
@@ -179,6 +167,6 @@ function Delete(...args) {
 
 module.exports = {
     isMatching, parseUrlData, getSearchParams, urlSplit,
-    tokenAccessTypes, tokenAccess, accessFors, routes, middlewares, callbacks,
+    routes, middlewares, callbacks,
     Get, Post, Put, Delete
 }
