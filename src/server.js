@@ -14,13 +14,9 @@ const server = http.createServer(IncomingRequest); // Creates the web server
  */
 function IncomingRequest(req, res) {
     let routeFound = false;
-
     res = Response(res); // Creating new request object with additinal functions
-
     routes.urlSplit(req);
-
     for (const index in routes.routes) {
-
         if (routes.isMatching(req, routes.routes[index].route) && req.method === routes.routes[index].method && routes.parseUrlData(req, routes.routes[index].route)) {
             routeFound = true;
             routes.getSearchParams(req);
@@ -28,9 +24,7 @@ function IncomingRequest(req, res) {
             break;
         };
     };
-
     if (routeFound === false) {
-        console.log("not found paths");
         res.send(404, "Path not found");
     };
 };
@@ -47,11 +41,12 @@ function requestExe(index, req, res) {
     Request(req, (error) => {
         if (error) {
             res.send(error.status, error.message);
-        };
-        if (routes.routes[index].hasMiddleWare) {
-            middlewareExe(index, req, res);
         } else {
-            callbackExe(index, req, res);
+            if (routes.routes[index].hasMiddleWare) {
+                middlewareExe(index, req, res);
+            } else {
+                callbackExe(index, req, res);
+            };
         };
     });
 };
@@ -66,7 +61,6 @@ function requestExe(index, req, res) {
 function middlewareExe(index, req, res) {
     Middlewares(req, res, routes.middlewares[index], async (error) => {
         if (error) {
-            console.log(error);
             res.send(error.status, error.message);
         } else {
             callbackExe(index, req, res);
@@ -89,7 +83,6 @@ function callbackExe(index, req, res) {
         } else {
             res.send(response.status, response.message);
         };
-
         delete req // Deleting the request object
     });
 };

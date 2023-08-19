@@ -1,4 +1,3 @@
-
 /**
  * Extract the search parameters from the request body
  * 
@@ -27,7 +26,7 @@ function getSearchParams(req) {
 function parseUrlData(req, route) {
     const routeSplit = route.split('/');
     req.urlParams = {}
-    if (routeSplit.length !== req.url.length) {
+    if (routeSplit.length !== req.url.split("/").length) {
         return false;
     };
     routeSplit.forEach((segment, index) => {
@@ -53,14 +52,11 @@ function isMatching(req, route) {
     if (typeof req.url !== "string") {
         return false
     };
-    let forStart = 0;
-    req.admin = false; // When True the request is identified as an admin request otherwise a normal request
     const urlSplit = req.url.split('/');
     urlSplit[0] = "/";
-    req.url = urlSplit;
     const routeSplit = route.split('/');
     routeSplit[0] = "/";
-    for (let index = forStart; index < routeSplit.length; index++) {
+    for (let index = 0; index < routeSplit.length; index++) {
         if (routeSplit[index][0] === ':') {
             if (typeof urlSplit[index] === "undefined") {
                 return false;

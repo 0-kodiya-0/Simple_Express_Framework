@@ -171,6 +171,8 @@ const Response = res => {
         res.end();
       };
 
+      console.log(text);
+
       delete res // Deleting the response object
     }
   };

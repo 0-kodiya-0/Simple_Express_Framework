@@ -1,3 +1,4 @@
+const { notFoundError } = require("./response");
 
 /**
  * Extracts form data from the request body
@@ -13,7 +14,6 @@ function extractMultiformData(req, cb) {
         const boundary = req.headers["content-type"][1].trim().replace("boundary=", "");
         body = body.split(boundary);
         req.body = {};
-
         body.forEach(element => {
             if (element !== "--") {
                 const keyString = element.split(";")[1].replaceAll("--", "").replace("name=", "").split('"');
@@ -80,7 +80,6 @@ function canHaveBodyCheck(method) {
  */
 function createBody(req, extractFunc, cb) {
     req.body = "";  // Creating body variable
-
     req.on('data', chunk => {  // Extracting the body
         try {
             bodyLenCheck(req.body);
@@ -113,18 +112,16 @@ function createBody(req, extractFunc, cb) {
  *   
  */
 function contentTypeAllowedCheck(req, cb) {
-
+    if (typeof req.headers["content-type"] !== "string") {
+        throw notFoundError("Header content-type not found");
+    };
     req.headers["content-type"] = req.headers["content-type"].split(";");
-
     switch (req.headers["content-type"][0]) {
         case "application/json":
             createBody(req, undefined, cb);
             break;
         case "multipart/form-data":
             createBody(req, extractMultiformData, cb);
-            break;
-        case "application/x-www-form-urlencoded":
-            createBody(req, undefined, cb);
             break;
         case "image/jpeg":
             cb();
@@ -145,17 +142,18 @@ function contentTypeAllowedCheck(req, cb) {
  * @callback cb 
  */
 const Request = (req, cb) => {
-
     req.on('error', (error) => { // for handling errors
         cb(error);
     });
-
-    urlLenCheck(req.url);
-
-    if (canHaveBodyCheck(req.method)) { // when we send images we don't want it to be equal to a string we will use res.pipe
-        contentTypeAllowedCheck(req, cb);
-    } else {
-        cb();
+    try {
+        urlLenCheck(req.url);
+        if (canHaveBodyCheck(req.method)) { // when we send images we don't want it to be equal to a string we will use res.pipe
+            contentTypeAllowedCheck(req, cb);
+        } else {
+            cb();
+        };
+    } catch (error) {
+        cb(error);
     };
 };
 
