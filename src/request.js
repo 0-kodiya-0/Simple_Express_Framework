@@ -1,5 +1,3 @@
-const { notFoundError } = require("./response");
-
 /**
  * Extracts form data from the request body
  * 
@@ -113,7 +111,7 @@ function createBody(req, extractFunc, cb) {
  */
 function contentTypeAllowedCheck(req, cb) {
     if (typeof req.headers["content-type"] !== "string") {
-        throw notFoundError("Header content-type not found");
+        throw { status: 404, message: "Header content-type not found" };
     };
     req.headers["content-type"] = req.headers["content-type"].split(";");
     switch (req.headers["content-type"][0]) {

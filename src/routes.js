@@ -108,7 +108,7 @@ function MethodMain(args, method) {
         callback = args[1];
     } else if (args.length > 2) {
         route = args[0];
-        callback = args[args.length - 1]
+        callback = args[args.length - 1];
         for (let i = 1; i < args.length - 1; i++) {
             if (typeof args[i] !== "function") {
                 throw new TypeError(`...args[${i}] need to be function`);

@@ -71,27 +71,6 @@ const StatusCodes = {
   511: "Network Authentication Required",  // Network Authentication Required
 }
 
-// const fastJson = require("fast-json-stringify");
-
-// const mongooseErrorStringify = fastJson(({
-//   title: "MongooseError",
-//   type: "object",
-//   properties: {
-//     name: {
-//       type: "string"
-//     },
-//     message: {
-//       type: "string"
-//     },
-//     kind: {
-//       type: "string"
-//     },
-//     path: {
-//       type: "string"
-//     }
-//   }
-// }));
-
 /**
  * Main class for Sending error in a http response for the client 
  * 
