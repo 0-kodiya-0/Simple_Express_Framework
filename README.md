@@ -1,5 +1,5 @@
 # MyExpressServer
-A Simple express server library
+A Simple custom express server framework
 
 # Notes
 index.js - Main file
