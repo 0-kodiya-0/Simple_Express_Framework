@@ -16,12 +16,6 @@ MyExpressServer is a minimalist web framework that provides essential HTTP serve
 - **Security**: Request validation (URL length, body size, content-type)
 - **Error Handling**: Comprehensive error handling throughout the request lifecycle
 
-## Installation
-
-```bash
-npm install myexpressserver
-```
-
 ## Quick Start
 
 ```javascript
